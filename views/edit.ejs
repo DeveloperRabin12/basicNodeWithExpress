@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>edit page</title>
+</head>
+<body>
+
+    <h2>this is edit page</h2>
+    <form action="/chats/<%=chato._id %>?_method=PUT" method="post">
+        <p>From : <%= chato.from %></p>
+        <textarea name="message" id=""><%= chato.message%></textarea>
+        <button>sibmit</button>
+    </form>
+    
+</body>
+</html>

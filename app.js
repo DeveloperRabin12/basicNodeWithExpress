@@ -3,6 +3,10 @@ const Chat = require('./models/chatmodel');
 const mongoose = require('mongoose');
 const app = express();
 
+// Method Override for using put patch delete
+const methodOverride = require('method-override');
+app.use(methodOverride('_method'));
+
 ConnectToMongoDB().then(() => {console.log("connected to db")})
 .catch(error => console.error(error));
 // Connect to MongoDB
@@ -47,10 +51,30 @@ app.post('/chats/new', (req, res) => {
     res.redirect('/chats');
     });
  
+//edit route
+app.get('/chats/:id/edit', async(req, res) => {
+    let {id} = req.params;
+   let chato =await Chat.findById(id);
+    res.render('edit', {chato});
+})
 
+app.put('/chats/:id', async(req, res) => {
+    let {id} = req.params;
+    let { message} = req.body;
+    await Chat.findByIdAndUpdate(id, {message:message}, { runValidators:true, new:true});
+    res.redirect('/chats');
+})
+
+//delete route
+app.delete('/chats/:id', async(req, res) => {
+    let {id} = req.params;
+    await Chat.findByIdAndDelete(id);
+    res.redirect('/chats');
+})
 
 
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 
 });
+
